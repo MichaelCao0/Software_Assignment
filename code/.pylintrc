@@ -1,0 +1,88 @@
+[MASTER]
+# 指定要分析的 Python 文件路径
+init-hook='import sys; sys.path.append(".")'
+
+[MESSAGES CONTROL]
+# 禁用一些常见的警告，可根据需要调整
+# disable=missing-docstring,invalid-name,too-few-public-methods
+
+[FORMAT]
+# 最大行长度
+max-line-length=120
+# 缩进
+indent-string='    '
+
+[BASIC]
+# 命名约定
+# 函数名、变量名、参数名：snake_case
+function-naming-style=snake_case
+variable-naming-style=snake_case
+argument-naming-style=snake_case
+# 类名：PascalCase
+class-naming-style=PascalCase
+# 常量名：UPPER_CASE
+const-naming-style=UPPER_CASE
+# 模块名：snake_case
+module-naming-style=snake_case
+
+[DESIGN]
+# 最大参数数量
+max-args=10
+# 最大属性数量
+max-attributes=15
+# 最大局部变量数量
+max-locals=20
+# 最大返回语句数量
+max-returns=6
+# 最大分支数量
+max-branches=15
+# 最大语句数量
+max-statements=60
+# 最大父类数量
+max-parents=7
+# 最大公共方法数量
+max-public-methods=30
+# 最小公共方法数量
+min-public-methods=0
+
+[IMPORTS]
+# 是否检查循环导入
+allow-wildcard-with-all=no
+
+[EXCEPTIONS]
+# 允许的异常名称
+overgeneral-exceptions=builtins.BaseException,builtins.Exception
+
+[REFACTORING]
+# 最大嵌套块数量
+max-nested-blocks=5
+
+[CLASSES]
+# 定义有效的类方法名
+valid-classmethod-first-arg=cls
+# 定义有效的元类方法名
+valid-metaclass-classmethod-first-arg=cls
+
+[VARIABLES]
+# 允许的全局变量名（正则表达式）
+additional-builtins=
+
+[TYPECHECK]
+# 生成成员
+generated-members=
+# 忽略的模块
+ignored-modules=
+# 忽略的类
+ignored-classes=optparse.Values,thread._local,_thread._local
+
+[LOGGING]
+# 日志格式
+logging-format-style=new
+
+[SPELLING]
+# 拼写检查字典
+spelling-dict=
+# 私有字典文件
+spelling-private-dict-file=
+# 存储未知单词的文件
+spelling-store-unknown-words=no

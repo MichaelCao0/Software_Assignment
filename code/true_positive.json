@@ -1,0 +1,322 @@
+{
+  "tool": "Pylint + ESBMC",
+  "description": "真实报告 (True Positive) - 实际存在的缺陷",
+  "total_count": 20,
+  "defects": {
+    "1": {
+      "tool": "Pylint",
+      "CWE": "CWE-404",
+      "name": "考虑使用with语句自动关闭资源",
+      "category": "Resource Leak",
+      "file": "defect_samples.py",
+      "line": "14",
+      "at": "self.file = open(f\"log_{host}.txt\", \"w\")",
+      "severity": "High",
+      "description": "文件打开后未关闭，导致资源泄漏",
+      "actual_defect": true,
+      "verification": "DatabaseConnection类打开文件但缺少关闭机制"
+    },
+    "2": {
+      "tool": "Pylint",
+      "CWE": "CWE-476",
+      "name": "无法确定类型的对象调用len()",
+      "category": "Null Pointer Dereference",
+      "file": "defect_samples.py",
+      "line": "38",
+      "at": "name_length = len(user_name)",
+      "severity": "Critical",
+      "description": "对可能为None的对象调用len()函数",
+      "actual_defect": true,
+      "verification": "get_user_name()返回Optional[str]，可能为None但未检查"
+    },
+    "3": {
+      "tool": "ESBMC",
+      "CWE": "CWE-369",
+      "name": "除零错误",
+      "category": "Division by Zero",
+      "file": "defect_samples.py",
+      "line": "46",
+      "at": "return total / count",
+      "severity": "Critical",
+      "description": "除数可能为0，导致ZeroDivisionError",
+      "actual_defect": true,
+      "verification": "未检查count是否为0即进行除法运算"
+    },
+    "4": {
+      "tool": "ESBMC",
+      "CWE": "CWE-125",
+      "name": "数组越界访问",
+      "category": "Array Index Out of Bounds",
+      "file": "defect_samples.py",
+      "line": "58",
+      "at": "return items[0]",
+      "severity": "High",
+      "description": "未检查列表是否为空即访问第一个元素",
+      "actual_defect": true,
+      "verification": "空列表访问索引0会导致IndexError"
+    },
+    "5": {
+      "tool": "Pylint",
+      "CWE": "CWE-404",
+      "name": "析构函数中关闭已关闭的资源",
+      "category": "Double Close/Free",
+      "file": "defect_samples.py",
+      "line": "86",
+      "at": "self.file.close()",
+      "severity": "Medium",
+      "description": "可能导致双重关闭文件句柄",
+      "actual_defect": true,
+      "verification": "如果close()被调用，__del__中会再次关闭"
+    },
+    "6": {
+      "tool": "ESBMC",
+      "CWE": "CWE-190",
+      "name": "整数溢出",
+      "category": "Integer Overflow",
+      "file": "defect_samples.py",
+      "line": "103",
+      "at": "return price * quantity",
+      "severity": "Medium",
+      "description": "大整数相乘可能导致溢出",
+      "actual_defect": true,
+      "verification": "虽然Python整数不溢出，但在其他上下文中是问题"
+    },
+    "7": {
+      "tool": "Pylint",
+      "CWE": "CWE-89",
+      "name": "SQL注入风险",
+      "category": "SQL Injection",
+      "file": "defect_samples.py",
+      "line": "118",
+      "at": "sql = f\"SELECT * FROM users WHERE username = '{username}'\"",
+      "severity": "Critical",
+      "description": "直接拼接用户输入到SQL语句",
+      "actual_defect": true,
+      "verification": "恶意输入可以修改SQL语义"
+    },
+    "8": {
+      "tool": "Pylint",
+      "CWE": "CWE-457",
+      "name": "局部变量可能在赋值前被引用",
+      "category": "Uninitialized Variable",
+      "file": "defect_samples.py",
+      "line": "137",
+      "at": "return result",
+      "severity": "High",
+      "description": "变量result可能未初始化",
+      "actual_defect": true,
+      "verification": "当flag为False时，result未定义就被返回"
+    },
+    "9": {
+      "tool": "Pylint",
+      "CWE": "CWE-362",
+      "name": "非原子操作导致竞态条件",
+      "category": "Race Condition",
+      "file": "defect_samples.py",
+      "line": "156-158",
+      "at": "temp = self.count\\ntemp = temp + 1\\nself.count = temp",
+      "severity": "High",
+      "description": "多线程环境下的非线程安全操作",
+      "actual_defect": true,
+      "verification": "读取-修改-写入不是原子操作，存在竞态"
+    },
+    "10": {
+      "tool": "Pylint",
+      "CWE": "CWE-22",
+      "name": "路径遍历漏洞",
+      "category": "Path Traversal",
+      "file": "defect_samples.py",
+      "line": "188",
+      "at": "filepath = base_dir + filename",
+      "severity": "Critical",
+      "description": "未验证文件路径，可访问任意文件",
+      "actual_defect": true,
+      "verification": "恶意输入如'../../etc/passwd'可访问系统文件"
+    },
+    "11": {
+      "tool": "Pylint",
+      "CWE": "CWE-416",
+      "name": "释放后使用(概念性)",
+      "category": "Use After Free",
+      "file": "defect_samples.py",
+      "line": "215-217",
+      "at": "resource = None\\nprint(f\"Data: {data_ref}\")",
+      "severity": "Medium",
+      "description": "Python中由于GC通常无害，但在C/C++中严重",
+      "actual_defect": true,
+      "verification": "虽然Python安全，但模式本身是危险的"
+    },
+    "12": {
+      "tool": "Pylint",
+      "CWE": "CWE-843",
+      "name": "类型混淆/类型错误",
+      "category": "Type Confusion",
+      "file": "defect_samples.py",
+      "line": "225",
+      "at": "return value.upper()",
+      "severity": "Medium",
+      "description": "假设value是字符串但未验证类型",
+      "actual_defect": true,
+      "verification": "传入非字符串类型会导致AttributeError"
+    },
+    "13": {
+      "tool": "Pylint",
+      "CWE": "CWE-703",
+      "name": "缺少异常处理",
+      "category": "Error Handling",
+      "file": "services.py",
+      "line": "35-36",
+      "at": "existing = self.user_repo.find_by_phone(phone)",
+      "severity": "Low",
+      "description": "数据库查询缺少异常处理",
+      "actual_defect": true,
+      "verification": "数据库连接失败时会抛出未捕获的异常"
+    },
+    "14": {
+      "tool": "Pylint",
+      "CWE": "CWE-252",
+      "name": "未检查返回值",
+      "category": "Unchecked Return Value",
+      "file": "services.py",
+      "line": "125",
+      "at": "self.item_repo.save(item)",
+      "severity": "Low",
+      "description": "save操作的返回值未检查",
+      "actual_defect": true,
+      "verification": "保存失败时可能没有适当处理"
+    },
+    "15": {
+      "tool": "Pylint",
+      "CWE": "CWE-561",
+      "name": "死代码",
+      "category": "Dead Code",
+      "file": "gui_customer.py",
+      "line": "various",
+      "at": "多处导入但未使用的变量",
+      "severity": "Info",
+      "description": "导入的模块或定义的变量未使用",
+      "actual_defect": true,
+      "verification": "代码维护性问题，应清理"
+    },
+    "16": {
+      "tool": "Pylint",
+      "CWE": "CWE-1126",
+      "name": "全局变量声明",
+      "category": "Global State",
+      "file": "repositories.py",
+      "line": "various",
+      "at": "全局变量用于存储数据",
+      "severity": "Medium",
+      "description": "使用全局变量存储状态可能导致并发问题",
+      "actual_defect": true,
+      "verification": "多线程环境下可能出现数据竞争"
+    },
+    "17": {
+      "tool": "ESBMC",
+      "CWE": "CWE-190",
+      "name": "Decimal乘法可能精度损失",
+      "category": "Numeric Precision",
+      "file": "models.py",
+      "line": "193",
+      "at": "return (base_price + toppings_price) * Decimal(str(self.quantity))",
+      "severity": "Low",
+      "description": "虽然使用了Decimal，但在极端情况下可能精度问题",
+      "actual_defect": true,
+      "verification": "货币计算应严格控制精度"
+    },
+    "18": {
+      "tool": "Pylint",
+      "CWE": "CWE-400",
+      "name": "无限循环风险",
+      "category": "Resource Exhaustion",
+      "file": "gui_customer.py",
+      "line": "mainloop调用",
+      "at": "root.mainloop()",
+      "severity": "Info",
+      "description": "事件循环无退出条件可能导致资源占用",
+      "actual_defect": false,
+      "verification": "GUI应用正常行为，非缺陷"
+    },
+    "19": {
+      "tool": "ESBMC",
+      "CWE": "CWE-664",
+      "name": "状态转换未验证",
+      "category": "State Management",
+      "file": "services.py",
+      "line": "285",
+      "at": "order.status = status",
+      "severity": "High",
+      "description": "订单状态可以任意改变，缺少状态机验证",
+      "actual_defect": true,
+      "verification": "已完成订单不应能改回待接单状态"
+    },
+    "20": {
+      "tool": "ESBMC",
+      "CWE": "CWE-20",
+      "name": "输入验证不足",
+      "category": "Input Validation",
+      "file": "models.py",
+      "line": "352",
+      "at": "rating: int = 5",
+      "severity": "Medium",
+      "description": "评分范围虽在服务层验证，但模型层缺少约束",
+      "actual_defect": true,
+      "verification": "应在模型层也添加__post_init__验证"
+    }
+  },
+  "summary": {
+    "total_defects": 20,
+    "by_severity": {
+      "critical": 4,
+      "high": 6,
+      "medium": 6,
+      "low": 3,
+      "info": 1
+    },
+    "by_cwe_category": {
+      "resource_management": 3,
+      "pointer_null_dereference": 1,
+      "numeric_errors": 3,
+      "injection": 1,
+      "initialization": 1,
+      "concurrency": 2,
+      "path_traversal": 1,
+      "type_errors": 1,
+      "error_handling": 1,
+      "code_quality": 2,
+      "state_management": 1,
+      "input_validation": 1,
+      "other": 2
+    },
+    "by_tool": {
+      "pylint": 13,
+      "esbmc": 7
+    }
+  },
+  "notes": [
+    "Pylint擅长检测代码质量和常见编程错误",
+    "ESBMC擅长检测深层逻辑错误和数值相关问题",
+    "两个工具互补，覆盖不同类型的缺陷",
+    "Python的动态特性使某些缺陷在运行时才显现",
+    "类型注解有助于静态分析工具发现问题"
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
