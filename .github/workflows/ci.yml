@@ -38,8 +38,8 @@ jobs:
     - name: Run tests with pytest
       run: |
         # 设置 PYTHONPATH 确保能找到源码
-        export PYTHONPATH=$PYTHONPATH:$(pwd)/se_code/code
-        pytest se_code/code/5/test_unit.py se_code/code/5/test_integration.py --cov=se_code/code --cov-report=xml
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        pytest 5/test_unit.py 5/test_integration.py --cov=. --cov-report=xml
 
     # 第五步：上传覆盖率报告 (可选)
     - name: Upload coverage to Codecov
